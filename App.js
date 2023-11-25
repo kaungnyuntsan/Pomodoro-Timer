@@ -1,5 +1,12 @@
 import { StatusBar } from "expo-status-bar";
-import { SectionList, StyleSheet, Text, View, Button } from "react-native";
+import {
+  SectionList,
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  Pressable,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 
 export default function App() {
@@ -18,7 +25,7 @@ export default function App() {
           setSeconds(seconds - 1);
         } else if (minutes > 0 && seconds === 0) {
           setMinutes(minutes - 1);
-          setSeconds(5);
+          setSeconds(59);
         } else if (minutes === 0) {
           setIsStart(false);
           setIsWorking(!isWorking);
@@ -42,15 +49,24 @@ export default function App() {
         {minutes < 10 ? "0" + minutes : minutes} :{" "}
         {seconds < 10 ? "0" + seconds : seconds}{" "}
       </Text>
-      <Button
-        title="start"
+      {/* <Pressable
         onPress={() => {
           setIsStart(true);
         }}
-      />
-      <Button title="stop" onPress={() => setIsStart(false)} />
+        style={styles.press}
+      >
+        <Text> start </Text>
+      </Pressable> */}
 
-      <Button title="reset" onPress={resetTimer} />
+      <View style={styles.button}>
+        <Button title="start" onPress={() => setIsStart(true)} />
+      </View>
+      <View style={styles.button}>
+        <Button title="stop" onPress={() => setIsStart(false)} />
+      </View>
+      <View style={styles.button}>
+        <Button title="reset" onPress={resetTimer} />
+      </View>
       {/* <Button
         title="console sec"
         onPress={() => console.log(`seconds : ${seconds}`)}
@@ -78,5 +94,13 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 30,
+  },
+  // press: {
+  //   borderWidth: 1,
+  //   margin: 10,
+  //   padding: 5,
+  // },
+  button: {
+    margin: 5,
   },
 });
