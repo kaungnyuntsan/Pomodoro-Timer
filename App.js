@@ -3,31 +3,61 @@ import { SectionList, StyleSheet, Text, View, Button } from "react-native";
 import React, { useState, useEffect } from "react";
 
 export default function App() {
-  const [second, setSecond] = useState(0);
-  const [minute, setMinute] = useState(2);
+  const workTime = 2;
+  const breakTime = 5;
 
-  // useEffect(() => {
-  //   if (second >= 0) {
-  //     const intervalID = setInterval(() => setSecond(second - 1), 1000);
-  //     return () => clearInterval(intervalID);
-  //   } else if (minute > 0) {
-  //     setMinute(minute - 1);
-  //     // setSecond(59);
-  //     setSecond(9);
-  //   } else if (minute === 0) {
-  //     setSecond(0);
-  //   }
-  //   console.log(`second : ${second}`);
-  //   console.log(`minute : ${minute}`);
-  // }, [second, minute]);
+  const [seconds, setSeconds] = useState(0);
+  const [minutes, setMinutes] = useState(workTime);
+  const [isStart, setIsStart] = useState(false);
+
+  useEffect(() => {
+    if (isStart) {
+      const intervalID = setInterval(() => {
+        if (minutes >= 0 && seconds > 0) {
+          setSeconds(seconds - 1);
+        } else if (minutes > 0 && seconds === 0) {
+          setMinutes(minutes - 1);
+          setSeconds(5);
+        } else if (minutes === 0) {
+          setIsStart(false);
+          // resetTimer(breakTime);
+          setMinutes(breakTime);
+          setSeconds(0);
+        }
+      }, 1000);
+      return () => clearInterval(intervalID);
+    }
+    console.log("effect run");
+  }, [isStart, seconds, minutes]);
+
+  const resetTimer = () => {
+    setMinutes(workTime);
+    setSeconds(0);
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.text}>
-        {minute < 10 ? "0" + minute : minute} :{" "}
-        {second < 10 ? "0" + second : second}{" "}
+        {minutes < 10 ? "0" + minutes : minutes} :{" "}
+        {seconds < 10 ? "0" + seconds : seconds}{" "}
       </Text>
-      <Button title="start" onPress={() => console.log(second)} />
+      <Button
+        title="start"
+        onPress={() => {
+          setIsStart(true);
+        }}
+      />
+      <Button title="stop" onPress={() => setIsStart(false)} />
+
+      <Button title="reset" onPress={resetTimer} />
+      <Button
+        title="console sec"
+        onPress={() => console.log(`seconds : ${seconds}`)}
+      />
+      <Button
+        title="console min"
+        onPress={() => console.log(`minutes : ${minutes}`)}
+      />
       <StatusBar style="auto" />
     </View>
   );
