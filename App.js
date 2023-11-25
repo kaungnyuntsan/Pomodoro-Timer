@@ -4,11 +4,12 @@ import React, { useState, useEffect } from "react";
 
 export default function App() {
   const workTime = 2;
-  const breakTime = 5;
+  const breakTime = 1;
 
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(workTime);
   const [isStart, setIsStart] = useState(false);
+  const [isWorking, setIsWorking] = useState(true);
 
   useEffect(() => {
     if (isStart) {
@@ -20,19 +21,19 @@ export default function App() {
           setSeconds(5);
         } else if (minutes === 0) {
           setIsStart(false);
-          // resetTimer(breakTime);
-          setMinutes(breakTime);
+          setIsWorking(!isWorking);
+          setMinutes(isWorking ? breakTime : workTime);
           setSeconds(0);
         }
       }, 1000);
       return () => clearInterval(intervalID);
     }
-    console.log("effect run");
   }, [isStart, seconds, minutes]);
 
   const resetTimer = () => {
-    setMinutes(workTime);
+    isWorking ? setMinutes(workTime) : setMinutes(breakTime);
     setSeconds(0);
+    setIsStart(false);
   };
 
   return (
@@ -50,7 +51,7 @@ export default function App() {
       <Button title="stop" onPress={() => setIsStart(false)} />
 
       <Button title="reset" onPress={resetTimer} />
-      <Button
+      {/* <Button
         title="console sec"
         onPress={() => console.log(`seconds : ${seconds}`)}
       />
@@ -58,6 +59,11 @@ export default function App() {
         title="console min"
         onPress={() => console.log(`minutes : ${minutes}`)}
       />
+
+      <Button
+        title="console isWorking"
+        onPress={() => console.log(isWorking)}
+      /> */}
       <StatusBar style="auto" />
     </View>
   );
