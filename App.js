@@ -5,6 +5,7 @@ import {
   View,
   SafeAreaView,
   Button,
+  Vibration
 } from "react-native";
 import React, { useState, useEffect } from "react";
 
@@ -26,6 +27,7 @@ export default function App() {
           setMinutes(minutes - 1);
           setSeconds(59);
         } else if (minutes === 0) {
+          Vibration.vibrate([1000, 1000, 1000])
           setIsStart(false);
           setIsWorking(!isWorking);
           setMinutes(isWorking ? breakTime : workTime);
