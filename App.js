@@ -1,11 +1,10 @@
 import { StatusBar } from "expo-status-bar";
 import {
-  SectionList,
   StyleSheet,
   Text,
   View,
+  SafeAreaView,
   Button,
-  Pressable,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 
@@ -44,44 +43,39 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>
-        {minutes < 10 ? "0" + minutes : minutes} :{" "}
-        {seconds < 10 ? "0" + seconds : seconds}{" "}
-      </Text>
-      {/* <Pressable
-        onPress={() => {
-          setIsStart(true);
-        }}
-        style={styles.press}
-      >
-        <Text> start </Text>
-      </Pressable> */}
 
-      <View style={styles.button}>
-        <Button title="start" onPress={() => setIsStart(true)} />
+    <SafeAreaView style={styles.container}>
+      <View>
+        <Text style={styles.titletext}>Pomodoro Timer</Text>
+        <Text style={styles.titletext}>
+          Work Time : {workTime} minutes
+        </Text>
+        <Text style={styles.titletext}>
+          Break Time : {breakTime} minutes
+        </Text>
+        <Text style={styles.titletext} >
+          Currently {isWorking ? 'working' : 'take a break'}!
+        </Text>
       </View>
-      <View style={styles.button}>
-        <Button title="stop" onPress={() => setIsStart(false)} />
-      </View>
-      <View style={styles.button}>
-        <Button title="reset" onPress={resetTimer} />
-      </View>
-      {/* <Button
-        title="console sec"
-        onPress={() => console.log(`seconds : ${seconds}`)}
-      />
-      <Button
-        title="console min"
-        onPress={() => console.log(`minutes : ${minutes}`)}
-      />
+      <View style={styles.timer}>
+        <Text style={styles.text}>
+          {minutes < 10 ? "0" + minutes : minutes} :{" "}
+          {seconds < 10 ? "0" + seconds : seconds}{" "}
+        </Text>
+    
 
-      <Button
-        title="console isWorking"
-        onPress={() => console.log(isWorking)}
-      /> */}
-      <StatusBar style="auto" />
-    </View>
+        <View style={styles.button}>
+          <Button title="start" onPress={() => setIsStart(true)} />
+        </View>
+        <View style={styles.button}>
+          <Button title="stop" onPress={() => setIsStart(false)} />
+        </View>
+        <View style={styles.button}>
+          <Button title="reset" onPress={resetTimer} />
+        </View>
+        </View>
+        {/* <StatusBar style="auto" /> */}
+    </SafeAreaView>
   );
 }
 
@@ -89,11 +83,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    margin : 20,
+   
   },
   text: {
     fontSize: 30,
+  },
+  timer : {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  titletext : {
+    fontSize: 17,
   },
   // press: {
   //   borderWidth: 1,
