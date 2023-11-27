@@ -12,8 +12,8 @@ import {
 import React, { useState, useEffect } from "react";
 
 export default function App() {
-  const [workTime, setWorkTime] = useState(2);
-  const [breakTime, setBreakTime] = useState(1);
+  const [workTime, setWorkTime] = useState(25);
+  const [breakTime, setBreakTime] = useState(5);
 
   const [inputWorkTime, setInputWorkTime] = useState(workTime.toString());
   const [inputBreakTime, setInputBreakTime] = useState(breakTime.toString());
