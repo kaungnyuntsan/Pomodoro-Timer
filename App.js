@@ -12,8 +12,11 @@ import {
 import React, { useState, useEffect } from "react";
 
 export default function App() {
-  const workTime = 2;
-  const breakTime = 1;
+  const [workTime, setWorkTime] = useState(2);
+  const [breakTime, setBreakTime] = useState(1);
+
+  const [inputWorkTime, setInputWorkTime] = useState(workTime.toString());
+  const [inputBreakTime, setInputBreakTime] = useState(breakTime.toString());
 
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(workTime);
@@ -30,6 +33,7 @@ export default function App() {
         } else if (minutes > 0 && seconds === 0) {
           setMinutes(minutes - 1);
           setSeconds(59);
+          // setSeconds(5);
         } else if (minutes === 0) {
           Vibration.vibrate([1000, 1000, 1000]);
           setIsStart(false);
@@ -40,6 +44,7 @@ export default function App() {
       }, 1000);
       return () => clearInterval(intervalID);
     }
+    // console.log("effect run");
   }, [isStart, seconds, minutes]);
 
   const resetTimer = () => {
@@ -54,37 +59,59 @@ export default function App() {
         // transparent={modalVisible}
         animationType="slide"
         presentationStyle="formSheet"
-        onRequestClose={() => setModalVisible(!modalVisible)}
+        onRequestClose={() => {
+          setInputWorkTime(workTime.toString());
+          setInputBreakTime(breakTime.toString());
+          setModalVisible(!modalVisible);
+        }}
         visible={modalVisible}
       >
         {/* <Modal transparent={modalVisible} presentationStyle="pageSheet"> */}
         <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
-          <Text style={styles.titletext}> Work Time :</Text>
+          <Text style={styles.titletext}> Work Time (minutes):</Text>
 
           <TextInput
             style={{ height: 40, margin: 12, borderWidth: 1, padding: 10 }}
             autoFocus
+            maxLength={3}
             keyboardType="number-pad"
-            // value={"2"}
-            onChangeText={() => {}}
+            value={inputWorkTime}
+            onChangeText={setInputWorkTime}
+          ></TextInput>
+          <Text style={styles.titletext}> Break Time (minutes):</Text>
+
+          <TextInput
+            style={{ height: 40, margin: 12, borderWidth: 1, padding: 10 }}
+            maxLength={3}
+            keyboardType="number-pad"
+            value={inputBreakTime}
+            onChangeText={setInputBreakTime}
           ></TextInput>
           <Button
             title="change"
             onPress={() => {
+              setIsStart(false);
+              setMinutes(parseInt(inputWorkTime));
+              setSeconds(0);
+              setWorkTime(parseInt(inputWorkTime));
+              setBreakTime(parseInt(inputBreakTime));
               setModalVisible(!modalVisible);
             }}
           />
         </SafeAreaView>
       </Modal>
-      <View>
+      <View style={{ width: 200 }}>
         <Text style={styles.titletext}>Pomodoro Timer</Text>
+        <View style={{ borderWidth: 1, width: 100 }}>
+          <Button
+            title="edit timer"
+            onPress={() => {
+              setModalVisible(true);
+            }}
+          />
+        </View>
         <Text style={styles.titletext}>Work Time : {workTime} minutes</Text>
-        <Button
-          title="edit"
-          onPress={() => {
-            setModalVisible(true);
-          }}
-        />
+
         <Text style={styles.titletext}>Break Time : {breakTime} minutes</Text>
         <Text style={styles.titletext}>
           Currently {isWorking ? "working" : "take a break"}!
